@@ -123,54 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &212591305
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 212591307}
-  - component: {fileID: 212591306}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &212591306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 212591305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36366108063b5f7408c181bdb32e512c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileMaterial: {fileID: 2100000, guid: ae9d1b153c0977c47a9430df9e8096da, type: 2}
-  tileSize: 0.6
-  yOffset: 0.08
-  boardCenter: {x: 0, y: 0, z: 0}
---- !u!4 &212591307
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 212591305}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1929506, y: 0.49845755, z: -1.9396213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +389,7 @@ GameObject:
   - component: {fileID: 8134394007480042468}
   - component: {fileID: 1358590227105630809}
   - component: {fileID: 8141175012411881024}
+  - component: {fileID: 8141175012411881025}
   m_Layer: 0
   m_Name: Chess Board
   m_TagString: Untagged
@@ -512,3 +465,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8141175012411881025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923410334439280925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36366108063b5f7408c181bdb32e512c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileMaterial: {fileID: 2100000, guid: ae9d1b153c0977c47a9430df9e8096da, type: 2}
+  tileSize: 0.6
+  yOffset: 0.001
+  boardCenter: {x: 0, y: 0, z: 0}
+  prefabs:
+  - {fileID: 1878356416060784834, guid: 005578d9c9128be488309bc36072e733, type: 3}
+  - {fileID: 835659219742126676, guid: cb0f3824fb2bd3e42bc75c7384bcaa4d, type: 3}
+  - {fileID: 4989401891474683709, guid: 4d0150eb1507c9342a941199622b54a0, type: 3}
+  - {fileID: 3224700407197109043, guid: bb401b96e69c23248b63689cfb7c7cb6, type: 3}
+  - {fileID: 2747170230124533830, guid: 5a1f25f015ee2b5478b89dd537b7327a, type: 3}
+  - {fileID: 6099119726373293330, guid: d959d79596ca5ab4e8c6aa850090037b, type: 3}
+  teamMaterials:
+  - {fileID: 2100000, guid: db50c827ef4154d46b6104fb8c328a61, type: 2}
+  - {fileID: 2100000, guid: c0be0975aaf4a2c479169ebc248b1507, type: 2}

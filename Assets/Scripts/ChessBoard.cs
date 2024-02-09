@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.AnnotationUtility;
 
 public class ChessBoard : MonoBehaviour
 {
-    [Header("Art")]
+
+
+    [Header("Board Centering")]
     [SerializeField] private Material tileMaterial;
     [SerializeField] private float tileSize = 1.0f;
     [SerializeField] private float yOffset = 0.2f;
@@ -12,6 +15,12 @@ public class ChessBoard : MonoBehaviour
     //chess board size
     private const int TILE_COUNT_X = 8;
     private const int TILE_COUNT_Y = 8;
+
+    [Header("Prefabs and Materials")]
+    [SerializeField] private GameObject[] prefabs;
+    [SerializeField] private Material[] teamMaterials;
+
+    private ChessPiece[,] ChessPieces;
 
     private GameObject[,] tiles; 
     private Camera currentCamera;
@@ -22,6 +31,10 @@ public class ChessBoard : MonoBehaviour
     private void Awake()
     {
         GenerateAllTiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
+
+        SpawnAllPieces("aboba");
+
+        PositionAllPieces();
     }
     private void Update()
     {
@@ -109,7 +122,11 @@ public class ChessBoard : MonoBehaviour
         return tileObject;
     }
 
-    //Operations
+    /// <summary>
+    /// Checks if the Hit tile is  correcnt
+    /// </summary>
+    /// <param name="hitInfo">Tile information</param>
+    /// <returns>Returns coordinates or False</returns>
     private Vector2Int LookupTileIndex(GameObject hitInfo)
     {
         for (int x = 0;x < TILE_COUNT_X;x++)
@@ -121,6 +138,86 @@ public class ChessBoard : MonoBehaviour
             }
         }
         return -Vector2Int.one;// return false Vector (Invalid)
+    }
+
+    private void SpawnAllPieces(string FenNotation)
+    {
+        ChessPieces = new ChessPiece[TILE_COUNT_X,TILE_COUNT_Y];
+
+        int whiteTeam = 0, blackTeam = 1;
+
+        // FUTURE UPDATE: Add a FEN notation for the pieces
+
+
+        //White team Pattern
+        ChessPieces[0, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
+        ChessPieces[1, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
+        ChessPieces[2, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
+        ChessPieces[3, 0] = SpawnSinglePiece(ChessPieceType.King, whiteTeam);
+        ChessPieces[4, 0] = SpawnSinglePiece(ChessPieceType.Queen, whiteTeam);
+        ChessPieces[5, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
+        ChessPieces[6, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
+        ChessPieces[7, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
+        for (int i = 0; i < 8; i++)
+            ChessPieces[i, 1] = SpawnSinglePiece(ChessPieceType.Pawn, whiteTeam);
+
+        //Black team Pattern
+        ChessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
+        ChessPieces[1, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
+        ChessPieces[2, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
+        ChessPieces[3, 7] = SpawnSinglePiece(ChessPieceType.King, blackTeam);
+        ChessPieces[4, 7] = SpawnSinglePiece(ChessPieceType.Queen, blackTeam);
+        ChessPieces[5, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
+        ChessPieces[6, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
+        ChessPieces[7, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
+        for (int i = 0; i < 8; i++)            
+            ChessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);
+
+    }
+    /// <summary>
+    /// Spawn a single Chess piece type
+    /// </summary>
+    /// <param name="type">Piece Rank</param>
+    /// <param name="team">Chess Team</param>
+    /// <returns>Chess Piece</returns>
+    private ChessPiece SpawnSinglePiece(ChessPieceType type , int team)
+    {
+        ChessPiece cp = Instantiate(prefabs[(int)type - 1],transform).GetComponent<ChessPiece>();
+
+        cp.type = type;
+        cp.team = team;
+
+        Material[] mats = new Material[2]{ teamMaterials[team], teamMaterials[team] };
+        cp.GetComponent<MeshRenderer>().materials = mats;
+
+        return cp;
+    }
+    /// <summary>
+    /// Position All the Pieces on Tiles
+    /// </summary>
+    private void PositionAllPieces()
+    {
+        for (int x = 0; x < TILE_COUNT_X; x++)
+            for (int y = 0; y < TILE_COUNT_Y; y++)
+                if (ChessPieces[x, y] != null)
+                    PositionSinglePiece(x, y, true);
+    }
+    /// <summary>
+    /// Position A single Piece on the board
+    /// </summary>
+    /// <param name="x">x coordinates</param>
+    /// <param name="y">y coordinates</param>
+    /// <param name="force"> pieces snap in place</param>
+    private void PositionSinglePiece(int x, int y ,bool force = false)
+    {
+        ChessPieces[x, y].currentX = x;
+        ChessPieces[x, y].currentY = y;
+
+        ChessPieces[x , y].transform.position = GetTileCenter(x, y);
+    }
+    private Vector3 GetTileCenter(int x,int y)
+    {
+        return new Vector3(x * tileSize, yOffset, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2); 
     }
 }
 
