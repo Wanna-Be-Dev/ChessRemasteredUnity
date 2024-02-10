@@ -48,7 +48,10 @@ public class ChessBoard : MonoBehaviour
     }
     private void Update()
     {
-        if(!currentCamera)
+        if(Input.GetKeyDown(KeyCode.M)) 
+            DebugChessBoard();
+
+        if (!currentCamera)
         {
             currentCamera = Camera.main;
             return;
@@ -100,16 +103,9 @@ public class ChessBoard : MonoBehaviour
                     currentlyDraging.SetPosition(GetTileCenter(previousPosition.x , previousPosition.y));
 
                 currentlyDraging = null;
-                HighlightTiles(false);    
+                HighlightTiles(false);
             }
-            //if we're dragging a piece
-            if(currentlyDraging)
-            {
-                Plane horizontalPlane = new Plane(Vector3.up,Vector3.up * yOffset);
-                float distance = 0.0f;
-                if(horizontalPlane.Raycast(ray, out distance))
-                    currentlyDraging.SetPosition(ray.GetPoint(distance) + Vector3.up * dragOffset);
-            }
+            
         }
         else
         {
@@ -124,6 +120,15 @@ public class ChessBoard : MonoBehaviour
                 currentlyDraging = null;
                 HighlightTiles(false);
             }
+        }
+
+        //if we're dragging a piece
+        if (currentlyDraging)
+        {
+            Plane horizontalPlane = new Plane(Vector3.up, Vector3.up * yOffset);
+            float distance = 0.0f;
+            if (horizontalPlane.Raycast(ray, out distance))
+                currentlyDraging.SetPosition(ray.GetPoint(distance) + Vector3.up * dragOffset);
         }
     }
     // Generate The board
@@ -293,8 +298,9 @@ public class ChessBoard : MonoBehaviour
     /// <returns>can or cannot move</returns>
     private bool MoveTo(ChessPiece cp, int x, int y)
     {
-        if (!ContainsValidMove(ref availableMoves, new Vector2(x,y)))
+        if (!ContainsValidMove(ref availableMoves, new Vector2(x, y)))
             return false;
+
         Vector2Int previousPosition = new Vector2Int(cp.currentX, cp.currentY);
 
         //Check if there is another piece on the target position
@@ -344,13 +350,14 @@ public class ChessBoard : MonoBehaviour
     //HighLight availiable tiles
     private void HighlightTiles(bool state)
     {
-        if (state)
+        if(state)
         {
             for (int i = 0; i < availableMoves.Count; i++)
             {
                 tiles[availableMoves[i].x, availableMoves[i].y].layer = LayerMask.NameToLayer("Highlight");
             }
-        }else
+        }
+        else
         {
             for (int i = 0; i < availableMoves.Count; i++)
             {
@@ -358,6 +365,29 @@ public class ChessBoard : MonoBehaviour
             }
             availableMoves.Clear();
         }
+        
+        
+    }
+    private void DebugChessBoard()
+    {
+        string chezBoard = "";
+        for (int y = 0; y < TILE_COUNT_Y; y++)
+        {
+            for (int x = 0; x < TILE_COUNT_X; x++)
+            {
+                if (ChessPieces[x, y] != null)
+                {
+                    ChessPiece type = ChessPieces[x, y];
+                    chezBoard += " " + type.type.ToString().Substring(0, 1);
+                }
+                if (ChessPieces[x, y] == null)
+                {
+                    chezBoard += " o";
+                }
+            }
+            chezBoard += "\n";
+        }
+        Debug.Log(chezBoard);
     }
 }
 
