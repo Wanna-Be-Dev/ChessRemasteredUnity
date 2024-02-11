@@ -22,6 +22,10 @@ public class ChessPiece : MonoBehaviour
 
     private Vector3 desiredPosition;
     private Vector3 desiredScale = Vector3.one;
+    private void Start()
+    {
+        transform.rotation = Quaternion.Euler((team == 0) ? new Vector3(-90, 0, 0) : new Vector3(-90, 0, 180));
+    }
 
     private void Update()
     {
@@ -37,6 +41,10 @@ public class ChessPiece : MonoBehaviour
         r.Add(new Vector2Int(4,3));
         r.Add(new Vector2Int(4,4));
         return r;
+    }
+    public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> movelist, ref List<Vector2Int> availableMoves)
+    {
+        return SpecialMove.None;
     }
     public virtual void SetPosition(Vector3 position, bool force = false)
     {
