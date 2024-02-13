@@ -39,8 +39,10 @@ public class Pawn : ChessPiece
     public override SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> movelist, ref List<Vector2Int> availableMoves)
     {
         int direction = (team == 0) ? 1 : -1;
+        if((team == 0 && currentY == 6) || (team == 1 && currentY == 1))
+            return SpecialMove.Promotion;
         //EnPassant
-        if(movelist.Count > 0)
+        if (movelist.Count > 0)
         {
             Vector2Int[] lastMove = movelist[movelist.Count - 1];
             if (board[lastMove[1].x , lastMove[1].y].type == ChessPieceType.Pawn) // if the last piece was a pawn
