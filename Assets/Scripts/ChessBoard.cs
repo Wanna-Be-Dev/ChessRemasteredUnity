@@ -234,11 +234,11 @@ public class ChessBoard : MonoBehaviour
 
 
         //White team Pattern
-        /*ChessPieces[0, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
+        ChessPieces[0, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
         ChessPieces[1, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
-        ChessPieces[2, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);*/
+        ChessPieces[2, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
         ChessPieces[4, 0] = SpawnSinglePiece(ChessPieceType.King, whiteTeam);
-        ChessPieces[3, 0] = SpawnSinglePiece(ChessPieceType.Queen, whiteTeam);/*
+        ChessPieces[3, 0] = SpawnSinglePiece(ChessPieceType.Queen, whiteTeam);
         ChessPieces[5, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
         ChessPieces[6, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
         ChessPieces[7, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
@@ -248,14 +248,14 @@ public class ChessBoard : MonoBehaviour
         //Black team Pattern
         ChessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
         ChessPieces[1, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
-        ChessPieces[2, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);*/
+        ChessPieces[2, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
         ChessPieces[4, 7] = SpawnSinglePiece(ChessPieceType.King, blackTeam);
-/*        ChessPieces[3, 7] = SpawnSinglePiece(ChessPieceType.Queen, blackTeam);
+        ChessPieces[3, 7] = SpawnSinglePiece(ChessPieceType.Queen, blackTeam);
         ChessPieces[5, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
         ChessPieces[6, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
         ChessPieces[7, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
-        for (int i = 0; i < 8; i++)            
-            ChessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);*/
+        for (int i = 0; i < 8; i++)
+            ChessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);
 
     }//change here after
     /// <summary>
@@ -558,8 +558,37 @@ public class ChessBoard : MonoBehaviour
         if (specialMove == SpecialMove.Castling)
         {
             Vector2Int[] lastMove = movelist[movelist.Count - 1];
+            ChessPiece rook;
             //Left Rook
-            if (lastMove[1].x == 2) 
+
+            switch ((lastMove[1].x,lastMove[1].y))
+            {
+                case(2,0):
+                    rook = ChessPieces[0, 0];
+                    ChessPieces[3,0] = rook;
+                    PositionSinglePiece(3, 0);
+                    ChessPieces[0, 0] = null;
+                    break;
+                case(2,7):
+                    rook = ChessPieces[0, 7];
+                    ChessPieces[3, 7] = rook;
+                    PositionSinglePiece(3, 7);
+                    ChessPieces[0, 7] = null;
+                    break;
+                case(6,0):
+                    rook = ChessPieces[7, 0];
+                    ChessPieces[5, 0] = rook;
+                    PositionSinglePiece(5, 0);
+                    ChessPieces[7, 0] = null;
+                    break;
+                case(6,7):
+                    rook = ChessPieces[7, 7];
+                    ChessPieces[5, 7] = rook;
+                    PositionSinglePiece(5, 7);
+                    ChessPieces[7, 7] = null;
+                    break;
+            }
+            /*if (lastMove[1].x == 2) 
             {
                 if(lastMove[1].y == 0)// white side
                 {
@@ -592,7 +621,7 @@ public class ChessBoard : MonoBehaviour
                     PositionSinglePiece(5, 7);
                     ChessPieces[7, 7] = null;
                 }
-            }
+            }*/
         }
     }
     private void PreventCheck()
